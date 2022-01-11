@@ -1,0 +1,214 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API REST Base Repo",
+    "description": "This is an API base to start new proyects",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operations abaout users"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get a list of all users",
+        "description": "The array of all users in JSON format.",
+        "responses": {
+          "200": {
+            "description": "The array of all users in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Users"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "add a user",
+        "description": "Adds an user to the system",
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "Add an user to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "user created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put":{
+        "tags": [
+          "users"
+        ],
+        "summary": "update an existing user by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateUser",
+        "requestBody": {
+          "description": "update an user to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user update"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch":{
+        "tags": [
+          "users"
+        ],
+        "summary": "update an existing user by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateUserPatch",
+        "requestBody": {
+          "description": "update an user to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user update"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete":{
+        "tags": [
+          "users"
+        ],
+        "summary": "delete an user",
+        "description": "delete an item to the system",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          }
+        }
+      },
+      "UserBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Damian"
+          }
+        }
+      }
+    }
+  }
+}
