@@ -37,9 +37,7 @@ const idIsRequired = check("id").not().isEmpty();
 const idIsMongoDB = check("id").isMongoId();
 const idExist = check("id").custom(async (id = "") => {
   const userFound = await userService.findById(id);
-  if (!userFound) {
-    throw new AppError("The Id does not not exist in DB", 400);
-  }
+  if (!userFound) throw new AppError("The Id does not not exist in DB", 400);
 });
 
 const validationRes = (req, res, next) => {
