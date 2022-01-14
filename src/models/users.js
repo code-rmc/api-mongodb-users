@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { Schema, model } = mongoose;
+const ROLES = require("../constants");
 
 const usersSchema = new Schema(
   {
@@ -28,7 +28,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
       default: "USER_ROLE",
-      enum: ["USER_ROLE", "ADMIN_ROLE"],
+      enum: `${ROLES}`,
     },
     enable: {
       type: Boolean,
@@ -44,6 +44,7 @@ const usersSchema = new Schema(
 usersSchema.plugin(uniqueValidator, {
   message: `Error, already exist in the database.`,
 });
+
 usersSchema.plugin(mongoosePaginate);
 
 module.exports = model("users", usersSchema);
