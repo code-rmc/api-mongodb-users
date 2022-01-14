@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const UserRepository = require("../repositories/userRepository");
 const repository = new UserRepository();
 
@@ -6,12 +5,15 @@ const findById = async (id) => {
   return await repository.findById(id);
 };
 
+const findByEmail = async (email) => {
+  return await repository.findByEmail(email);
+};
+
 const findAll = async (filter, options) => {
   return await repository.findAllWithPagination(filter, options);
 };
 
 const save = async (user) => {
-  user.password = await bcrypt.hash(user.password, 10);
   return await repository.save(user);
 };
 
@@ -25,6 +27,7 @@ const remove = async (id) => {
 
 module.exports = {
   findById,
+  findByEmail,
   findAll,
   save,
   update,

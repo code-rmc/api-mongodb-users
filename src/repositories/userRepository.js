@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const User = require("../models/users");
 
 class UserRepository {
@@ -11,8 +12,12 @@ class UserRepository {
     return await User.find();
   }
 
+  async findByEmail(email) {
+    return await User.findOne({ email });
+  }
+
   async findAllWithPagination(filter, options) {
-    return await user.paginate(filter, options);
+    return await User.paginate(filter, options);
   }
 
   /**
@@ -30,6 +35,7 @@ class UserRepository {
    * @returns {User}
    */
   async save(user) {
+    user.password = await bcrypt.hash(user.password, 10);
     return await User.create(user);
   }
 
