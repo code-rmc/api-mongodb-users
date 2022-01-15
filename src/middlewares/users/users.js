@@ -1,7 +1,8 @@
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 const AppError = require("../../errors/appErrors");
 const userService = require("../../services/userServices");
 const { ROLES } = require("../../constants");
+const { validationRes } = require("../commons");
 
 const nameRequired = check("name", "Name required").not().isEmpty();
 const lastNameRequired = check("last", "Last Name required").not().isEmpty();
@@ -14,6 +15,7 @@ const emailExist = check("email").custom(async (email = "") => {
     throw new AppError("Email already exist in DB", 400);
   }
 });
+/* Verificacion del campo email en caso de modificaion del usuario */
 const optionalEmailValid = check("email", "Email is invalid")
   .optional()
   .isEmail();
@@ -39,14 +41,6 @@ const idExist = check("id").custom(async (id = "") => {
   const userFound = await userService.findById(id);
   if (!userFound) throw new AppError("The Id does not not exist in DB", 400);
 });
-
-const validationRes = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw new AppError(`Validation Error: `, 400, errors.errors);
-  }
-  next();
-};
 
 const postRequestValidations = [
   nameRequired,
