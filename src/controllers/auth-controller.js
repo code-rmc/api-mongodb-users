@@ -11,7 +11,8 @@ const Success = require("../handlers/successHandler");
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    res.json(new Success(await authServices.login(email, password)));
+    const userToken = await authServices.login(email, password);
+    res.json(new Success(userToken));
   } catch (error) {
     next(error);
   }
