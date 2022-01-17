@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { findByEmail } = require("./userServices");
+const { findById, findByEmail } = require("./userServices");
 const AppError = require("../errors/appErrors");
 const config = require("../config");
 
+// Genera un token
 const encrypt = (id) => {
   return jwt.sign({ id }, config.auth.secret, { expiresIn: config.auth.ttl });
 };
@@ -16,13 +17,13 @@ const login = async (email, password) => {
     if (!user) {
       throw new AppError(
         "Authenticaction failed Email / Password does not correct.",
-        400
+        401
       );
     }
 
     // Validacion de usuario habilitado
     if (!user.enable) {
-      throw new AppError("Authenticaction failed user disabled.", 400);
+      throw new AppError("Authenticaction failed user disabled.", 401);
     }
 
     // Validacion de password
@@ -31,7 +32,7 @@ const login = async (email, password) => {
     if (!validPassword) {
       throw new AppError(
         "Authenticaction failed Email / Password does not correct. Password",
-        400
+        401
       );
     }
 
@@ -48,6 +49,43 @@ const login = async (email, password) => {
   }
 };
 
+const validToken = async (token) => {
+  try {
+    // Validar que el token venga como parametro
+    if (!token) {
+      throw new AppError("Authentication failed! Token required", 401);
+    }
+
+    // Validar que el token sea integro
+    let id;
+    try {
+      const obj = jwt.verify(token, config.auth.secret);
+      id = obj.id;
+    } catch (errValid) {
+      throw new AppError("Authentication failed! Invalid token", 401);
+    }
+
+    // Validar el usuario en la base de datos
+    const user = await findById(id);
+    if (!user) {
+      throw new AppError(
+        "Authentication failed! Invalid token - User not found",
+        401
+      );
+    }
+
+    // Validar el campo estado del usuario
+    if (!user.enable) {
+      throw new AppError("Authentication failed! User disabled", 401);
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   login,
+  validToken,
 };

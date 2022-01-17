@@ -3,6 +3,7 @@ const AppError = require("../../errors/appErrors");
 const userService = require("../../services/userServices");
 const { ROLES } = require("../../constants");
 const { validationRes } = require("../commons");
+const { validJWT } = require("../auth");
 
 const nameRequired = check("name", "Name required").not().isEmpty();
 const lastNameRequired = check("last", "Last Name required").not().isEmpty();
@@ -43,6 +44,7 @@ const idExist = check("id").custom(async (id = "") => {
 });
 
 const postRequestValidations = [
+  validJWT,
   nameRequired,
   lastNameRequired,
   passwordRequired,
