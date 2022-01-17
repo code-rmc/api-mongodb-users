@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const ROLES = require("../constants");
+const { ROLES } = require("../constants");
 
 const usersSchema = new Schema(
   {
@@ -28,7 +28,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
       default: "USER_ROLE",
-      enum: `${ROLES}`,
+      enum: ROLES,
     },
     enable: {
       type: Boolean,
