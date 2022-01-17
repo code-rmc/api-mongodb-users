@@ -85,7 +85,16 @@ const validToken = async (token) => {
   }
 };
 
+// Validacion por rol
+const validRol = (user, ...roles) => {
+  if (!roles.includes(user.rol)) {
+    throw new AppError("Authorization failed! User without privileges", 403);
+  }
+  return true;
+};
+
 module.exports = {
   login,
   validToken,
+  validRol,
 };
