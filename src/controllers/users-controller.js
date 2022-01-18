@@ -12,6 +12,7 @@ const Success = require("../handlers/successHandler");
  *
  * @param {express.Request} req
  * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
 const getAllUsers = async (req, res, next) => {
   try {
@@ -26,6 +27,7 @@ const getAllUsers = async (req, res, next) => {
  *
  * @param {express.Request} req
  * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
 const createUser = async (req, res, next) => {
   try {
@@ -41,6 +43,7 @@ const createUser = async (req, res, next) => {
  *
  * @param {express.Request} req
  * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
 const updateUser = async (req, res, next) => {
   try {
@@ -57,6 +60,7 @@ const updateUser = async (req, res, next) => {
  *
  * @param {express.Request} req
  * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
 const getById = async (req, res, next) => {
   try {
@@ -72,6 +76,7 @@ const getById = async (req, res, next) => {
  *
  * @param {express.Request} req
  * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
 const deleteUser = async (req, res, next) => {
   try {

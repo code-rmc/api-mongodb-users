@@ -1,7 +1,9 @@
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 const AppError = require("../../errors/appErrors");
 const userService = require("../../services/userServices");
-const { ROLES } = require("../../constants");
+const { ROLES, ADMIN_ROLE, USER_ROLE } = require("../../constants");
+const { validationRes } = require("../commons");
+const { validJWT, hasRole } = require("../auth");
 
 const nameRequired = check("name", "Name required").not().isEmpty();
 const lastNameRequired = check("last", "Last Name required").not().isEmpty();
@@ -14,6 +16,7 @@ const emailExist = check("email").custom(async (email = "") => {
     throw new AppError("Email already exist in DB", 400);
   }
 });
+/* Verificacion del campo email en caso de modificaion del usuario */
 const optionalEmailValid = check("email", "Email is invalid")
   .optional()
   .isEmail();
@@ -40,15 +43,9 @@ const idExist = check("id").custom(async (id = "") => {
   if (!userFound) throw new AppError("The Id does not not exist in DB", 400);
 });
 
-const validationRes = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw new AppError(`Validation Error: `, 400, errors.errors);
-  }
-  next();
-};
-
 const postRequestValidations = [
+  validJWT,
+  hasRole(ADMIN_ROLE),
   nameRequired,
   lastNameRequired,
   passwordRequired,
@@ -61,6 +58,8 @@ const postRequestValidations = [
 ];
 
 const putRequestValidations = [
+  validJWT,
+  hasRole(ADMIN_ROLE),
   idExist,
   idIsRequired,
   idIsMongoDB,
@@ -79,6 +78,8 @@ const getByIdRequestValidations = [
 ];
 
 const deleteRequestValidations = [
+  validJWT,
+  hasRole(ADMIN_ROLE),
   idExist,
   idIsRequired,
   idIsMongoDB,
