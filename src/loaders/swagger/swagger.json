@@ -10,7 +10,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "servers": [
     {
@@ -18,7 +18,7 @@
       "description": "Development"
     },
     {
-      "url": "http://localhost:3000/api/v1",
+      "url": "http://api-mogodb-user.herokuapp.com/api/v1",
       "description": "Production"
     }
   ],
@@ -32,18 +32,13 @@
       "description": "Operations abaout users"
     }
   ],
-  "security":{
-    "accessCode":[
-      "read",
-      "write"
-    ]
+  "security": {
+    "accessCode": ["read", "write"]
   },
   "paths": {
     "/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Login user",
         "description": "User authenticated in the system",
         "operationId": "loginUser",
@@ -76,9 +71,7 @@
     },
     "/users": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get a list of all users",
         "description": "The array of all users in JSON format.",
         "security": [],
@@ -102,9 +95,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "add a user",
         "description": "Adds an user to the system",
         "operationId": "addUser",
@@ -140,10 +131,8 @@
       }
     },
     "/users/{id}": {
-      "put":{
-        "tags": [
-          "Users"
-        ],
+      "put": {
+        "tags": ["Users"],
         "summary": "update an existing user by providing the id",
         "description": "update an item to the system",
         "operationId": "updateUser",
@@ -188,10 +177,8 @@
           }
         }
       },
-      "delete":{
-        "tags": [
-          "Users"
-        ],
+      "delete": {
+        "tags": ["Users"],
         "summary": "delete an user",
         "description": "delete an item to the system",
         "operationId": "deleteUser",
@@ -234,9 +221,7 @@
   "components": {
     "schemas": {
       "Users": {
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "type": "object",
         "properties": {
           "id": {
@@ -248,20 +233,20 @@
             "example": "Javier"
           },
           "last": {
-            "type":"string",
-          "example": "Perez"
+            "type": "string",
+            "example": "Perez"
           },
           "email": {
-            "type":"string",
+            "type": "string",
             "example": "0.6333065036502268@email.com.ar"
           },
           "birthdate": {
             "type": "date",
-            "example":"2001-06-16T03:00:00.000Z"
+            "example": "2001-06-16T03:00:00.000Z"
           },
           "password": {
             "type": "string",
-            "example":"$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
+            "example": "$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
           },
           "rol": {
             "type": "string",
@@ -273,10 +258,12 @@
           },
           "createdAt": {
             "type": "date",
-            "example": "2022-01-13T22:03:53.859Z"},
+            "example": "2022-01-13T22:03:53.859Z"
+          },
           "updatedAt": {
             "type": "date",
-            "example": "2022-01-13T22:03:53.859Z"}
+            "example": "2022-01-13T22:03:53.859Z"
+          }
         }
       },
       "UserBody": {
@@ -287,20 +274,20 @@
             "example": "Javier"
           },
           "last": {
-            "type":"string",
-          "example": "Perez"
+            "type": "string",
+            "example": "Perez"
           },
           "email": {
-            "type":"string",
+            "type": "string",
             "example": "random@email.com.ar"
           },
           "birthdate": {
             "type": "date",
-            "example":"06-16-2001"
+            "example": "06-16-2001"
           },
           "password": {
             "type": "string",
-            "example":"123456"
+            "example": "123456"
           },
           "rol": {
             "type": "string",
@@ -316,16 +303,16 @@
             "example": "Javier"
           },
           "last": {
-            "type":"string",
-          "example": "Perez"
+            "type": "string",
+            "example": "Perez"
           },
           "birthdate": {
             "type": "date",
-            "example":"06-16-2001"
+            "example": "06-16-2001"
           },
           "password": {
             "type": "string",
-            "example":"123456"
+            "example": "123456"
           },
           "rol": {
             "type": "string",
