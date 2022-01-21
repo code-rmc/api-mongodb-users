@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API REST Base Repo",
-    "description": "This is an API base to start new proyects",
+    "title": "API REST User Repo",
+    "description": "This is an user API project",
     "contact": {
       "email": "you@your-company.com"
     },
@@ -10,28 +10,78 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "servers": [
     {
       "url": "http://localhost:3000/api/v1",
       "description": "Development"
+    },
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Production"
     }
   ],
   "tags": [
     {
-      "name": "users",
+      "name": "Auth",
+      "description": "Operations Login user"
+    },
+    {
+      "name": "Users",
       "description": "Operations abaout users"
     }
   ],
+  "security":{
+    "accessCode":[
+      "read",
+      "write"
+    ]
+  },
   "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login user",
+        "description": "User authenticated in the system",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "User authenticated in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLogin"
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "user authenticated"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed Email / Password does not correct."
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "tags": [
-          "users"
+          "Users"
         ],
         "summary": "Get a list of all users",
         "description": "The array of all users in JSON format.",
+        "security": [],
         "responses": {
           "200": {
             "description": "The array of all users in JSON format.",
@@ -53,7 +103,7 @@
       },
       "post": {
         "tags": [
-          "users"
+          "Users"
         ],
         "summary": "add a user",
         "description": "Adds an user to the system",
@@ -68,12 +118,23 @@
             }
           }
         },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "responses": {
           "201": {
             "description": "user created"
           },
           "400": {
             "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "500": {
+            "description": "Error server"
           }
         }
       }
@@ -81,7 +142,7 @@
     "/users/{id}": {
       "put":{
         "tags": [
-          "users"
+          "Users"
         ],
         "summary": "update an existing user by providing the id",
         "description": "update an item to the system",
@@ -91,7 +152,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBody"
+                "$ref": "#/components/schemas/UserBodyUpdate"
               }
             }
           }
@@ -103,59 +164,33 @@
             "description": "The id of the user that need to be update.",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "user update"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      },
-      "patch":{
-        "tags": [
-          "users"
-        ],
-        "summary": "update an existing user by providing the id",
-        "description": "update an item to the system",
-        "operationId": "updateUserPatch",
-        "requestBody": {
-          "description": "update an user to the system",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserBody"
-              }
-            }
-          }
-        },
-        "parameters": [
+        "security": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "The id of the user that need to be update.",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
           "200": {
             "description": "user update"
           },
-          "404": {
-            "description": "Not found"
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "500": {
+            "description": "Error server"
           }
         }
       },
       "delete":{
         "tags": [
-          "users"
+          "Users"
         ],
         "summary": "delete an user",
         "description": "delete an item to the system",
@@ -167,8 +202,13 @@
             "description": "The id of the user that need to be deleted.",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
           }
         ],
         "responses": {
@@ -177,6 +217,15 @@
           },
           "400": {
             "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
           }
         }
       }
@@ -197,7 +246,37 @@
           "name": {
             "type": "string",
             "example": "Javier"
-          }
+          },
+          "last": {
+            "type":"string",
+          "example": "Perez"
+          },
+          "email": {
+            "type":"string",
+            "example": "0.6333065036502268@email.com.ar"
+          },
+          "birthdate": {
+            "type": "date",
+            "example":"2001-06-16T03:00:00.000Z"
+          },
+          "password": {
+            "type": "string",
+            "example":"$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          },
+          "enable": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"},
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"}
         }
       },
       "UserBody": {
@@ -205,9 +284,74 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Damian"
+            "example": "Javier"
+          },
+          "last": {
+            "type":"string",
+          "example": "Perez"
+          },
+          "email": {
+            "type":"string",
+            "example": "random@email.com.ar"
+          },
+          "birthdate": {
+            "type": "date",
+            "example":"06-16-2001"
+          },
+          "password": {
+            "type": "string",
+            "example":"123456"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
           }
         }
+      },
+      "UserBodyUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          },
+          "last": {
+            "type":"string",
+          "example": "Perez"
+          },
+          "birthdate": {
+            "type": "date",
+            "example":"06-16-2001"
+          },
+          "password": {
+            "type": "string",
+            "example":"123456"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          }
+        }
+      },
+      "AuthLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "hola@email.com.ar"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
       }
     }
   }
