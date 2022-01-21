@@ -7,17 +7,23 @@
     "dev": "npx nodemon src",
     "start": "node src",
     "test": "node ./postman/newman",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "keywords": [],
   "author": "Rodrigo",
   "license": "ISC",
+  "lint-staged": {
+    "*.{js,json,md}": "prettier --write"
+  },
   "devDependencies": {
     "husky": "^7.0.0",
+    "lint-staged": "^12.2.2",
     "newman": "^5.3.1",
     "newman-reporter-html": "^1.0.5",
     "newman-reporter-htmlextra": "^1.22.4",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
