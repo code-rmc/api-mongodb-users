@@ -3,7 +3,7 @@
 ## 👾 Descripcion
 Api de usuarios construida en node js y express, usando mongoDB, Middlewares express-validator, autentificacion de usuario manejo de rol y uso de Json Web Token
 
-## Pre-requisitos
+## ⚙️ Pre-requisitos
 Instalar las dependencias necesarias, mongoose, express, jsonwebtoken...
 
 usuando el siguiente comando instala los paquetes
@@ -12,7 +12,7 @@ npm i
 ```
 
 ## 📝 Test 
-cada vez que haga un commit a github automaticamente realizara un test 
+Cada vez que haga un commit a github automaticamente realizara un test 
 
 para correr los test aparte use
 ```
@@ -68,3 +68,5 @@ Heroku [link](https://api-mogodb-user.herokuapp.com/)
   }
 }
 ```
+## 📌 Versionado
+Para ver los Tags diríjase a [TAGS](https://github.com/code-rmc/api-mongodb-users/releases)
